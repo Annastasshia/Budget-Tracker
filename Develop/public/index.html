@@ -43,5 +43,56 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <script src="index.js"></script>
+
+  <script>
+
+    // IndexDB added  
+
+    const request = indexedDB.open("transaction", 1);
+    request.onsuccess = event => { 
+      console.log(request.result)
+    };
+
+    request.onupgradeneeded = event => {
+
+	  const db = event.target.result;
+    const objectStore = db.createObjectStore("add");
+
+    const TransactionStore = db.createObjectStore({keyPath: "listID"})
+
+    const addTransaction = db.transaction(["addFunds"], "readwrite");
+    const subTransaction = db.transaction(["subFunds"], "readwrite");
+    
+    addTransaction.add({ listID: "1", status: "complete"});
+    subTransaction.add({ listID: "1", status: "complete"});
+
+    const getAddId = addTransaction.getAll("complete");
+    getAddId.onsuccess = () => {
+    Console.log(getAddId.result);
+    }
+
+    const getSubId = subTransaction.getAll("complete");
+    getSubId.onsuccess = () => {
+    Console.log(getSubId.result);
+    }
+    };
+
+    
+    
+ 
+
+
+  // register service worker 
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("service-worker.js")
+        .then(reg => {
+          console.log("Service worker file found", reg);
+        })
+      })
+    }
+
+  </script>
 </body>
 </html>

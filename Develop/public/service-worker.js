@@ -1,7 +1,8 @@
 const FILES_TO_CACHE = [
     "/", 
     "/index.html", 
-    "style.css", 
+    "/style.css",
+    "/index.js", 
     "/icons/icon-192x192.png",
     "/icons/icon-512x512.png"];
 
@@ -40,7 +41,7 @@ self.addEventListener("activate", function(evt) {
 
 // fetch
 self.addEventListener("fetch", function(evt) {
-  if (evt.request.url.includes("/api/")) {
+  if (evt.request.url.includes("/api/transaction")) {
     evt.respondWith(
       caches.open(DATA_CACHE_NAME).then(cache => {
         return fetch(evt.request)
